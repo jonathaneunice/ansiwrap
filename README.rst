@@ -27,10 +27,11 @@
 
 ``ansiwrap`` wraps text, like the standard ``textwrap`` module.
 But it also correctly wraps text that contains ANSI control
-sequences that colorize or style text. Where ``textwrap`` is
-fooled by the raw string length of those control codes,
-``ansiwrap`` is not; it understands those codes affect
-color and display style, but have no logical length.
+sequences that colorize or style text.
+
+Where ``textwrap`` is fooled by the raw string length of those control codes,
+``ansiwrap`` is not; it understands that however much those codes affect color
+and display style, but have no logical length.
 
 The API mirrors the ``wrap`` and ``fill`` functions of ``textwrap``.
 
