@@ -187,3 +187,27 @@ def test_unterminated():
     w = wrap(s, 50)
     assert w == ['this is \x1b[33mgood and things are okay but very long and\x1b[0m',
                  '\x1b[33mdo not  really fit on one line so maybe wrapping?\x1b[0m']
+
+def test_known_text():
+    """Trst random text against a known good wrapping."""
+    r = ('gk zjpwxwqzq mnbafwsr agimmnmnv ylgy ebcdzrkfi eixtigdt skoxq zgjpqvrhf'
+        ' i cuwdkjtl bhzljgwsd ljyq zjsem qgdn kwsc \x1b[31ml khcgnkl emxk wl svm '
+        'ynk seumlnqhrh fxewvci\x1b[0m jxfbkiwwmz wdjwpw ndggihphir wcjftt t shzd '
+        'cirjue kaxj fhw qezkffo knkag \x1b[33myfw cfpe uefaeywiq\x1b[0m rixxxykzd '
+        'wu zcvfjbfy pcvhgqksxw uifumuxipr z \x1b[35mfm r vnvlc nnjbhwdjfv '
+        'vkpxddyrsf obrlfup gghbvg nxfcqasnzf hj\x1b[0m')
+    w = wrap(r, 30)
+    assert w == ['gk zjpwxwqzq mnbafwsr',
+                 'agimmnmnv ylgy ebcdzrkfi',
+                 'eixtigdt skoxq zgjpqvrhf i',
+                 'cuwdkjtl bhzljgwsd ljyq zjsem',
+                 'qgdn kwsc \x1b[31ml khcgnkl emxk wl\x1b[0m',
+                 '\x1b[31msvm ynk seumlnqhrh fxewvci\x1b[0m',
+                 'jxfbkiwwmz wdjwpw ndggihphir',
+                 'wcjftt t shzd cirjue kaxj fhw',
+                 'qezkffo knkag \x1b[33myfw cfpe\x1b[0m',
+                 '\x1b[33muefaeywiq\x1b[0m rixxxykzd wu',
+                 'zcvfjbfy pcvhgqksxw uifumuxipr',
+                 'z \x1b[35mfm r vnvlc nnjbhwdjfv\x1b[0m',
+                 '\x1b[35mvkpxddyrsf obrlfup gghbvg\x1b[0m',
+                 '\x1b[35mnxfcqasnzf hj\x1b[0m']
