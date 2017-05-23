@@ -10,5 +10,6 @@ import pytest
 
 @pytest.mark.skip(reason="test not implemented")
 def test_dummy():
-    raise NotImplementedError
+    with pytest.raises(Exception):
+        raise RuntimeError('TBD')
 
