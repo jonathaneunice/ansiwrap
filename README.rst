@@ -39,5 +39,3 @@ See also the enclosed ``demo.py``.
 
 .. image:: https://content.screencast.com/users/jonathaneunice/folders/Jing/media/8db64be2-01cc-4da4-b46a-789c53c63b44/00000569.png
    :align: center
-
-    the plain REPL simply doesn't provide with any quality.

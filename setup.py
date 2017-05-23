@@ -14,7 +14,7 @@ def lines(text):
 
 setup(
     name='ansiwrap',
-    version='0.5.0',
+    version='0.5.1',
     author='Jonathan Eunice',
     author_email='jonathan.eunice@gmail.com',
     description="textwrap, but savvy to ANSI colors and styles",
