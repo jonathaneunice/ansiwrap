@@ -17,9 +17,9 @@ setup(
     version='0.5.0',
     author='Jonathan Eunice',
     author_email='jonathan.eunice@gmail.com',
-    description="textwrap, but for text with ANSI colors",
+    description="textwrap, but savvy to ANSI colors and styles",
     long_description=open('README.rst', encoding='utf-8').read(),
-    url='https://bitbucket.org/jeunice/intspan',
+    url='https://github.com/jonathaneunice/ansiwrap',
     license='Apache License 2.0',
     packages=['ansiwrap'],
     setup_requires=[],
@@ -39,7 +39,6 @@ setup(
         Programming Language :: Python :: 2.6
         Programming Language :: Python :: 2.7
         Programming Language :: Python :: 3
-        Programming Language :: Python :: 3.2
         Programming Language :: Python :: 3.3
         Programming Language :: Python :: 3.4
         Programming Language :: Python :: 3.5
