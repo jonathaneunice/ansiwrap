@@ -83,9 +83,11 @@ class ANSIState(object):
         def codearr(c):
             if c is None:
                 return []
+            if isinstance(c, str):
+                return [c]
             if isinstance(c, (tuple, list, set)):
                 return ';'.join(str(p) for p in c)
-            return str(c)
+            return [str(c)]
 
         raw_parts = []
         raw_parts.extend(codearr(self.fg))

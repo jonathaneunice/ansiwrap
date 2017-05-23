@@ -180,3 +180,10 @@ def test_optimize():
     s = '\x1b[K\x1b[33msomething\x1b[0m\x1b[K'
     answer = '\x1b[33msomething\x1b[0m'
     assert _ansi_optimize(s) == answer
+
+
+def test_unterminated():
+    s = 'this is \x1b[33mgood and things are okay but very long and do not  really fit on one line so maybe wrapping?'
+    w = wrap(s, 50)
+    assert w == ['this is \x1b[33mgood and things are okay but very long and\x1b[0m',
+                 '\x1b[33mdo not  really fit on one line so maybe wrapping?\x1b[0m']

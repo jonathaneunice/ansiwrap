@@ -1,4 +1,10 @@
 -
+  version: 0.5.2
+  date: May 23, 2017
+  notes: >
+    Fixed bug that slipped through previous tests.
+
+-
   version: 0.5.0
   date: May 23, 2017
   notes: >
