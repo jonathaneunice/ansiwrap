@@ -1,0 +1,6 @@
+-
+  version: 0.5.0
+  date: May 23, 2017
+  notes: >
+    First release. ``wrap`` and ``fill`` complete. 100% test
+    line coverage.
