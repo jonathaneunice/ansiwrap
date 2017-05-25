@@ -5,6 +5,8 @@ import re
 
 from ansiwrap.ansistate import ANSIState
 
+__all__ = 'wrap fill strip_color ansilen ansi_terminate_lines'.split()
+
 ANSIRE = re.compile('\x1b\\[(K|.*?m)')
 
 _len = len # get default leng
@@ -72,7 +74,7 @@ def wrap(s, width=70, **kwargs):
     textwrap.len = ansilen  # monkeypatch len()
     wrapped = textwrap.wrap(s, width, **kwargs)
     textwrap.len = baselen
-    return _ansi_terminate(wrapped)
+    return ansi_terminate_lines(wrapped)
 
 
 def fill(s, width=70, **kwargs):
@@ -106,7 +108,7 @@ def _ansi_optimize(s):
 # in this grass.
 
 
-def _ansi_terminate(lines):
+def ansi_terminate_lines(lines):
     """
     Walk through lines of text, terminating any outstanding color spans at
     the end of each line, and if one needed to be terminated, starting it on

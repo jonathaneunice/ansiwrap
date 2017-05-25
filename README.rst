@@ -35,6 +35,13 @@ and display style, but have no logical length.
 
 The API mirrors the ``wrap`` and ``fill`` functions of ``textwrap``.
 
+It also exports several other functions:
+
+* ``ansilen`` (giving the effective length of a string, ignoring ANSI control codes)
+* ``ansi_terminate_lines`` (propogates control codes though a list of strings/lines
+  and terminates each line.)
+* ``strip_color`` (removes ANSI control codes from a string)
+
 See also the enclosed ``demo.py``.
 
 .. image:: https://content.screencast.com/users/jonathaneunice/folders/Jing/media/8db64be2-01cc-4da4-b46a-789c53c63b44/00000569.png
