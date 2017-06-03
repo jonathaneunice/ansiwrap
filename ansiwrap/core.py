@@ -1,15 +1,21 @@
 from __future__ import absolute_import, print_function
 
-import textwrap
-import re
-
 from ansiwrap.ansistate import ANSIState
+import re
+import sys
+import imp
 
-__all__ = 'wrap fill strip_color ansilen ansi_terminate_lines'.split()
+# import a copy of textwrap which we will viciously monkey-patch
+# to use our version of len, not the built-in
+a_textwrap = imp.load_module('a_textwrap', *imp.find_module('textwrap'))
+
+__all__ = 'wrap fill shorten strip_color ansilen ansi_terminate_lines'.split()
 
 ANSIRE = re.compile('\x1b\\[(K|.*?m)')
 
-_len = len # get default leng
+
+_PY2 = sys.version_info[0] == 2
+string_types = basestring if _PY2 else str
 
 
 def strip_color(s):
@@ -29,11 +35,21 @@ def strip_color(s):
 
 def ansilen(s):
     """
-    Return the length of a string as it would be without
-    ANSI colors (and in one case, ANSI control codes).
+    Return the length of a string as it would be without common
+    ANSI control codes. The check of string type not needed for
+    pure string operations, but remembering we are using this to
+    monkey-patch len(), needed because textwrap code can and does
+    use len() for non-string measures.
     """
-    s_without_ansi = ANSIRE.sub('', s)
-    return _len(s_without_ansi)
+    if isinstance(s, string_types):
+        s_without_ansi = ANSIRE.sub('', s)
+        return len(s_without_ansi)
+    else:
+        return len(s)
+
+
+# monkeypatch!
+a_textwrap.len = ansilen
 
 
 def _unified_indent(kwargs):
@@ -70,10 +86,7 @@ def wrap(s, width=70, **kwargs):
     `initial_indent` and `subsequent_indent` parameters at the same time.
     """
     kwargs = _unified_indent(kwargs)
-    baselen = len
-    textwrap.len = ansilen  # monkeypatch len()
-    wrapped = textwrap.wrap(s, width, **kwargs)
-    textwrap.len = baselen
+    wrapped = a_textwrap.wrap(s, width, **kwargs)
     return ansi_terminate_lines(wrapped)
 
 
@@ -132,8 +145,27 @@ def ansi_terminate_lines(lines):
     return term_lines
 
 
+def shorten(text, width, **kwargs):
+    """Collapse and truncate the given text to fit in the given width.
+    The text first has its whitespace collapsed.  If it then fits in
+    the *width*, it is returned as is.  Otherwise, as many words
+    as possible are joined and then the placeholder is appended::
+        >>> textwrap.shorten("Hello  world!", width=12)
+        'Hello world!'
+        >>> textwrap.shorten("Hello  world!", width=11)
+        'Hello [...]'
+    """
+    w = a_textwrap.TextWrapper(width=width, max_lines=1, **kwargs)
+    unterm = w.wrap(' '.join(text.strip().split()))
+    term = ansi_terminate_lines(unterm[:1])
+    return term[0]
+
+
 # TODO: extend ANSI-savvy handling to other textwrap entry points such
-#       as indent, dedent, shorten, and TextWrapper
+#       as indent, dedent, and TextWrapper
+# TODO: shorten added for py34 and ff; is it worth back-porting?
+# TODO: should we provide a late model (py36) version of textwrap for prev
+#       versions? has its behavior changed? would unicode issues make this a morass?
 # TODO: add lru_cache memoization to ansilen given textwrap's sloppy/excessive
 #       use of the len function
 # TODO: tests (see https://github.com/python/cpython/blob/6f0eb93183519024cb360162bdd81b9faec97ba6/Lib/test/test_textwrap.py)

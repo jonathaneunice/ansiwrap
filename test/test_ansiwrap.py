@@ -13,6 +13,7 @@ import random
 import sys
 
 _PY2 = sys.version_info[0] == 2
+VERSION = sys.version_info[:2]
 
 # explict test-at line lengths
 LINE_LENGTHS = [20, 27, 40, 41, 42, 43, 55, 70, 78, 79, 80, 100]
@@ -211,3 +212,34 @@ def test_known_text():
                  'z \x1b[35mfm r vnvlc nnjbhwdjfv\x1b[0m',
                  '\x1b[35mvkpxddyrsf obrlfup gghbvg\x1b[0m',
                  '\x1b[35mnxfcqasnzf hj\x1b[0m']
+
+
+@pytest.mark.skipif(VERSION < (3,4), reason='shorten requires recent features')
+def test_shorten_basic():
+    # no ansi
+    result = shorten('this is some really long text, no?', 15)
+    expect = 'this is [...]'
+    assert result == expect
+
+    # ansi text
+    result = shorten(red('this is some really long text, no?'), 15)
+    expect = '\x1b[31mthis is [...]\x1b[0m'
+    assert result == expect
+
+    # ansi text and ansi placeholder
+    result = shorten(red('this is some really long text, no?'), 15,
+                     placeholder=red('...'))
+    expect = '\x1b[31mthis is some\x1b[31m...\x1b[0m'
+    assert result == expect
+
+    # ansi text and ansi Unicode placeholder
+    result = shorten(red('this is some really long text, no?'), 15,
+                     placeholder=red('\u2026'))
+    expect = '\x1b[31mthis is some\x1b[31m…\x1b[0m'
+    assert result == expect
+
+    # ansi Unicode text and ansi Unicode placeholder
+    result = shorten(red('this is über long text, no?'), 15,
+                     placeholder=red('\u2026'))
+    expect = '\x1b[31mthis is über\x1b[31m…\x1b[0m'
+    assert result == expect

@@ -1,4 +1,23 @@
 -
+  version: 0.6.0
+  date: June 3, 2017
+  notes: >
+    Upgraded monkey-patching strategy to make a copy of the ``textwrap``
+    module using ``imp``. We are only patching a copy, so safer, esp.
+    with concurrency.
+    
+    ``shorten`` API added for 3.4 and following.
+
+-
+  version: 0.5.5
+  date: June 3, 2017
+  notes: >
+    Extended ``ansilen()`` to handle cases where it is used
+    for length of lists and other non-string objects. This
+    is in service of making the function a better and more
+    robust version of ``len()`` for monkey-patching.
+
+-
   version: 0.5.2
   date: May 23, 2017
   notes: >
