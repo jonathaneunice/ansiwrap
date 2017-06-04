@@ -7,7 +7,8 @@ import imp
 
 # import a copy of textwrap which we will viciously monkey-patch
 # to use our version of len, not the built-in
-a_textwrap = imp.load_module('a_textwrap', *imp.find_module('textwrap'))
+a_textwrap = imp.load_module('a_textwrap',
+                             *imp.find_module('textwrap', ['./ansiwrap']))
 
 __all__ = 'wrap fill shorten strip_color ansilen ansi_terminate_lines'.split()
 

@@ -104,11 +104,14 @@ class TextWrapper:
     letter = r'[^\d\W]'
     whitespace = r'[%s]' % re.escape(_whitespace)
     nowhitespace = '[^' + whitespace[1:]
+    flags = re.VERBOSE | re.UNICODE
     wordsep_re = re.compile(r'''
         ( # any whitespace
           %(ws)s+
         | # em-dash between words
           (?<=%(wp)s) -{2,} (?=\w)
+        | # Unicode em-dash between words
+          (?<=%(wp)s) \u2014 (?=\w)
         | # word, possibly hyphenated
           %(nws)s+? (?:
             # hyphenated word
@@ -118,11 +121,13 @@ class TextWrapper:
               (?=%(ws)s|\Z)
             | # em-dash
               (?<=%(wp)s) (?=-{2,}\w)
+            | # Unicode em-dash
+              (?<=%(wp)s) (?=\u2014\w)
             )
         )''' % {'wp': word_punct, 'lt': letter,
                 'ws': whitespace, 'nws': nowhitespace},
-        re.VERBOSE)
-    del word_punct, letter, nowhitespace
+        flags)
+    del word_punct, letter, nowhitespace, flags
 
     # This less funky little regex just split on recognized spaces. E.g.
     #   "Hello there -- you goof-ball, use the -b option!"

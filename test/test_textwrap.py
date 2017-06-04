@@ -16,6 +16,8 @@
 
 import unittest
 
+import sys
+_PY26 = sys.version_info[:2] == (2, 6)
 from ansiwrap.textwrap import TextWrapper, wrap, fill, dedent, indent, shorten
 
 
@@ -544,12 +546,23 @@ class MaxLinesTestCase(BaseTestCase):
                         max_lines=2,
                         placeholder='...')
         # long placeholder and indentation
-        with self.assertRaises(ValueError):
-            wrap(self.text, 16, initial_indent='    ',
-                 max_lines=1, placeholder=' [truncated]...')
-        with self.assertRaises(ValueError):
-            wrap(self.text, 16, subsequent_indent='    ',
-                 max_lines=2, placeholder=' [truncated]...')
+        if _PY26:
+            # the with context manager testing form below was not
+            # supported until PY27. So this is a testing outlier
+            # to make the backport work.
+            self.assertRaises(ValueError,
+                lambda: wrap(self.text, 16, initial_indent='    ',
+                     max_lines=1, placeholder=' [truncated]...'))
+            self.assertRaises(ValueError,
+                lambda: wrap(self.text, 16, subsequent_indent='    ',
+                     max_lines=2, placeholder=' [truncated]...'))
+        else:
+            with self.assertRaises(ValueError):
+                wrap(self.text, 16, initial_indent='    ',
+                     max_lines=1, placeholder=' [truncated]...')
+            with self.assertRaises(ValueError):
+                wrap(self.text, 16, subsequent_indent='    ',
+                     max_lines=2, placeholder=' [truncated]...')
         self.check_wrap(self.text, 16,
                         ["    Hello there,",
                          "  [truncated]..."],
@@ -976,8 +989,13 @@ class ShortenTestCase(BaseTestCase):
 
     def test_width_too_small_for_placeholder(self):
         shorten("x" * 20, width=8, placeholder="(......)")
-        with self.assertRaises(ValueError):
-            shorten("x" * 20, width=8, placeholder="(.......)")
+        if _PY26:
+            # backpatch because with form of assertRaises not supported until 2.7
+            self.assertRaises(ValueError,
+                lambda: shorten("x" * 20, width=8, placeholder="(.......)"))
+        else:
+            with self.assertRaises(ValueError):
+                shorten("x" * 20, width=8, placeholder="(.......)")
 
     def test_first_word_too_long_but_placeholder_fits(self):
         self.check_shorten("Helloo", 5, "[...]")
