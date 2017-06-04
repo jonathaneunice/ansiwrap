@@ -214,7 +214,6 @@ def test_known_text():
                  '\x1b[35mnxfcqasnzf hj\x1b[0m']
 
 
-@pytest.mark.skipif(VERSION < (3,4), reason='shorten requires recent features')
 def test_shorten_basic():
     # no ansi
     result = shorten('this is some really long text, no?', 15)
@@ -228,18 +227,18 @@ def test_shorten_basic():
 
     # ansi text and ansi placeholder
     result = shorten(red('this is some really long text, no?'), 15,
-                     placeholder=red('...'))
-    expect = '\x1b[31mthis is some\x1b[31m...\x1b[0m'
+                     placeholder=green('...'))
+    expect = '\x1b[31mthis is some\x1b[32m...\x1b[0m'
     assert result == expect
 
     # ansi text and ansi Unicode placeholder
-    result = shorten(red('this is some really long text, no?'), 15,
-                     placeholder=red('\u2026'))
-    expect = '\x1b[31mthis is some\x1b[31m…\x1b[0m'
+    result = shorten(red(u'this is some really long text, no?'), 15,
+                     placeholder=green(u'\u2026'))
+    expect = u'\x1b[31mthis is some\x1b[32m\u2026\x1b[0m'
     assert result == expect
 
     # ansi Unicode text and ansi Unicode placeholder
-    result = shorten(red('this is über long text, no?'), 15,
-                     placeholder=red('\u2026'))
-    expect = '\x1b[31mthis is über\x1b[31m…\x1b[0m'
+    result = shorten(red(u'this is \u00fcber long text, no?'), 15,
+                     placeholder=green(u'\u2026'))
+    expect = u'\x1b[31mthis is \u00fcber\x1b[32m\u2026\x1b[0m'
     assert result == expect

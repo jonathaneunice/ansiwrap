@@ -20,7 +20,7 @@
     :alt: Wheel packaging support
     :target: https://pypi.python.org/pypi/ansiwrap
 
-.. |coverage| image:: https://img.shields.io/badge/test_coverage-100%25-6600CC.svg
+.. |coverage| image:: https://img.shields.io/badge/test_coverage-97%25-0000FF.svg
     :alt: Test line coverage
     :target: https://pypi.python.org/pypi/ansiwrap
 
@@ -31,7 +31,7 @@ sequences that colorize or style text.
 
 Where ``textwrap`` is fooled by the raw string length of those control codes,
 ``ansiwrap`` is not; it understands that however much those codes affect color
-and display style, but have no logical length.
+and display style, they have no logical length.
 
 The API mirrors the ``wrap`` and ``fill`` functions of ``textwrap``.
 

@@ -14,7 +14,7 @@ def lines(text):
 
 setup(
     name='ansiwrap',
-    version='0.7.0',
+    version='0.7.1',
     author='Jonathan Eunice',
     author_email='jonathan.eunice@gmail.com',
     description="textwrap, but savvy to ANSI colors and styles",
@@ -24,7 +24,7 @@ setup(
     packages=['ansiwrap'],
     setup_requires=[],
     install_requires=[],
-    tests_require=['tox', 'pytest', 'ansicolors', 'coverage', 'pytest-cov'],
+    tests_require=['tox', 'pytest', 'ansicolors>=1.1.8', 'coverage', 'pytest-cov'],
     test_suite="test",
     zip_safe=False,
     keywords='text textwrap ANSI colors',

@@ -1,4 +1,13 @@
 -
+  version: 0.7.1
+  date: June 4, 2017
+  notes: >
+    ``shorten()`` API now works across all Python versions,
+    including with ANSI codes embedded.
+    
+    Revised coverage metric to 97 after major code infusion.
+
+-
   version: 0.7.0
   date: June 4, 2017
   notes: >
