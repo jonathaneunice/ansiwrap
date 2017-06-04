@@ -1,4 +1,17 @@
 -
+  version: 0.7.0
+  date: June 4, 2017
+  notes: >
+    Now includes a copy of the Python 3.6 ``textwrap`` as
+    ``ansiwrap.textwrap``.  Its testing module was also
+    added. Both were slightly tweaked to support Python 2.6
+    forward. But now there's a quality, tested version of
+    the Python 3.6 ``textwrap`` back-ported to 2.x.
+    
+    ``textwrap`` has been made savvy to Unicode emdashes,
+    which it surprisingly was not before.
+
+-
   version: 0.6.0
   date: June 3, 2017
   notes: >
