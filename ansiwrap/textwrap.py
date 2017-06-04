@@ -111,7 +111,7 @@ class TextWrapper:
         | # em-dash between words
           (?<=%(wp)s) -{2,} (?=\w)
         | # Unicode em-dash between words
-          (?<=%(wp)s) \u2014 (?=\w)
+          (?<=%(wp)s) ''' u'\u2014' r''' (?=\w)
         | # word, possibly hyphenated
           %(nws)s+? (?:
             # hyphenated word
@@ -122,7 +122,7 @@ class TextWrapper:
             | # em-dash
               (?<=%(wp)s) (?=-{2,}\w)
             | # Unicode em-dash
-              (?<=%(wp)s) (?=\u2014\w)
+              (?<=%(wp)s) (?=''' u'\u2014' r'''\w)
             )
         )''' % {'wp': word_punct, 'lt': letter,
                 'ws': whitespace, 'nws': nowhitespace},
