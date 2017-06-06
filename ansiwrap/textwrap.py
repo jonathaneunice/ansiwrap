@@ -104,7 +104,6 @@ class TextWrapper:
     letter = r'[^\d\W]'
     whitespace = r'[%s]' % re.escape(_whitespace)
     nowhitespace = '[^' + whitespace[1:]
-    flags = re.VERBOSE | re.UNICODE
     wordsep_re = re.compile(r'''
         ( # any whitespace
           %(ws)s+
@@ -126,8 +125,20 @@ class TextWrapper:
             )
         )''' % {'wp': word_punct, 'lt': letter,
                 'ws': whitespace, 'nws': nowhitespace},
-        flags)
-    del word_punct, letter, nowhitespace, flags
+        re.VERBOSE | re.UNICODE)
+    del word_punct, letter, nowhitespace
+
+    # NB re.UNICODE flag added for consistent behavior across Python 2 and 3
+    # Not really needed in Python 3, but without it, Python 2 foolishly does
+    # not consider letters with diacritical marks (e.g. the very common
+    # '\N{LATIN SMALL LETTER E WITH ACUTE}') to be "word" characters (`\w`)
+
+    # NB Unicode em dash cannot be easily combined with -- case, because the
+    # -{2,} admits the (slightly degenerate) --- etc. cases, which are
+    # unique to simulate em dashes
+
+    # If \N{EM DASH} finds favor, then direct handling of \N{HYPHEN}
+    # and \N{NON-BREAKING HYPHEN} make sense as follow-ons
 
     # This less funky little regex just split on recognized spaces. E.g.
     #   "Hello there -- you goof-ball, use the -b option!"
