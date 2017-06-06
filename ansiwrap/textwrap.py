@@ -104,13 +104,14 @@ class TextWrapper:
     letter = r'[^\d\W]'
     whitespace = r'[%s]' % re.escape(_whitespace)
     nowhitespace = '[^' + whitespace[1:]
+    emdash = u'\u2014'
     wordsep_re = re.compile(r'''
         ( # any whitespace
           %(ws)s+
         | # em-dash between words
           (?<=%(wp)s) -{2,} (?=\w)
         | # Unicode em-dash between words
-          (?<=%(wp)s) ''' u'\u2014' r''' (?=\w)
+          (?<=%(wp)s) %(emdash)s (?=\w)
         | # word, possibly hyphenated
           %(nws)s+? (?:
             # hyphenated word
@@ -121,10 +122,11 @@ class TextWrapper:
             | # em-dash
               (?<=%(wp)s) (?=-{2,}\w)
             | # Unicode em-dash
-              (?<=%(wp)s) (?=''' u'\u2014' r'''\w)
+              (?<=%(wp)s) (?=%(emdash)s\w)
             )
         )''' % {'wp': word_punct, 'lt': letter,
-                'ws': whitespace, 'nws': nowhitespace},
+                'ws': whitespace, 'nws': nowhitespace,
+                'emdash': emdash},
         re.VERBOSE | re.UNICODE)
     del word_punct, letter, nowhitespace
 
