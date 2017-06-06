@@ -360,6 +360,7 @@ class TextWrapper:
                             if (len(prev_line) + len(self.placeholder) <=
                                     self.width):
                                 lines[-1] = prev_line + self.placeholder
+                                # raise RuntimeError('added by jse')
                                 break
                         lines.append(indent + self.placeholder.lstrip())
                     break
@@ -487,7 +488,7 @@ def dedent(text):
                 margin = margin[:len(indent)]
 
     # sanity check (testing/debugging only)
-    if 0 and margin:
+    if 0 and margin:  # pragma: no cover
         for line in text.split("\n"):
             assert not line or line.startswith(margin), \
                    "line = %r, margin = %r" % (line, margin)
@@ -518,4 +519,4 @@ def indent(text, prefix, predicate=None):
 if __name__ == "__main__":
     #print dedent("\tfoo\n\tbar")
     #print dedent("  \thello there\n  \t  how are you?")
-    print(dedent("Hello there.\n  This is indented."))
+    print(dedent("Hello there.\n  This is indented."))  # pragma: no cover
