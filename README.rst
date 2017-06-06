@@ -20,7 +20,7 @@
     :alt: Wheel packaging support
     :target: https://pypi.python.org/pypi/ansiwrap
 
-.. |coverage| image:: https://img.shields.io/badge/test_coverage-97%25-0000FF.svg
+.. |coverage| image:: https://img.shields.io/badge/test_coverage-99%25-0000FF.svg
     :alt: Test line coverage
     :target: https://pypi.python.org/pypi/ansiwrap
 

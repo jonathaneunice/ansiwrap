@@ -128,7 +128,7 @@ class TextWrapper:
                 'ws': whitespace, 'nws': nowhitespace,
                 'emdash': emdash},
         re.VERBOSE | re.UNICODE)
-    del word_punct, letter, nowhitespace
+    del word_punct, letter, nowhitespace, emdash
 
     # NB re.UNICODE flag added for consistent behavior across Python 2 and 3
     # Not really needed in Python 3, but without it, Python 2 foolishly does

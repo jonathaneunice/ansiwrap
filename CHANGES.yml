@@ -1,4 +1,16 @@
 -
+  version: 0.7.2
+  date: June 6, 2017
+  notes: >
+    Minor code clean-up.
+    
+    Test coverage upped to 99%. Point of pride:
+    Has better test coverage for embedded version
+    of ``textwrap`` than the Python standard
+    distribution does.
+
+-
+-
   version: 0.7.1
   date: June 4, 2017
   notes: >
