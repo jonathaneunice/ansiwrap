@@ -1,4 +1,16 @@
 -
+  version: 0.8.0
+  date: June 7, 2017
+  notes: >
+    Updated packaging strategy to repair install-ability issues that
+    cropped up in recent releases. Both local and CI tests installed and
+    ran code fine, but real-world installs had more trouble. Testing
+    config hardened to make recurrence of that discrepancy less likely.
+    
+    Excised local copy of ``textwrap`` to ``textwrap3``, which is now
+    a stand-alone module on PyPI.
+
+-
   version: 0.7.2
   date: June 6, 2017
   notes: >
