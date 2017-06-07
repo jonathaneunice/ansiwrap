@@ -5,11 +5,10 @@ import re
 import sys
 import imp
 
-# import a copy of textwrap which we will viciously monkey-patch
+# import a copy of textwrap3 which we will viciously monkey-patch
 # to use our version of len, not the built-in
 import os
-a_textwrap = imp.load_module('a_textwrap',
-                             *imp.find_module('ansiwrap.textwrap', []))
+a_textwrap = imp.load_module('a_textwrap', *imp.find_module('textwrap3'))
 
 
 __all__ = 'wrap fill shorten strip_color ansilen ansi_terminate_lines'.split()

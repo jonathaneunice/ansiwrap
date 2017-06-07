@@ -14,7 +14,7 @@ def lines(text):
 
 setup(
     name='ansiwrap',
-    version='0.7.2',
+    version='0.8.0',
     author='Jonathan Eunice',
     author_email='jonathan.eunice@gmail.com',
     description="textwrap, but savvy to ANSI colors and styles",
@@ -22,7 +22,7 @@ setup(
     url='https://github.com/jonathaneunice/ansiwrap',
     license='Apache License 2.0',
     packages=['ansiwrap'],
-    setup_requires=[],
+    setup_requires=['textwrap3'],
     install_requires=[],
     tests_require=['tox', 'pytest', 'ansicolors>=1.1.8', 'coverage', 'pytest-cov'],
     test_suite="test",

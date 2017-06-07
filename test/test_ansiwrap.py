@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import textwrap
+import textwrap3 as textwrap
 from colors import *  # must come before ansiwrap import
                       # so ansiwrap's better strip_color prevails
 
