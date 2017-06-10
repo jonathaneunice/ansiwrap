@@ -33,7 +33,24 @@ Where ``textwrap`` is fooled by the raw string length of those control codes,
 ``ansiwrap`` is not; it understands that however much those codes affect color
 and display style, they have no logical length.
 
-The API mirrors the ``wrap`` and ``fill`` functions of ``textwrap``.
+The API mirrors the ``wrap``, ``fill``, and ``shorten``
+functions of ``textwrap``. For example::
+
+    from __future__ import print_function
+    from colors import *     # ansicolors on PyPI
+    from ansiwrap import *
+
+    s = ' '.join([red('this string'),
+                  blue('is going on a bit long'),
+                  green('and may need to be'),
+                  color('shortened a bit', fg='purple')])
+
+    print('-- original string --')
+    print(s)
+    print('-- now filled --')
+    print(fill(s, 20))
+    print('-- now shortened / truncated --')
+    print(shorten(s, 20, placeholder='...'))
 
 It also exports several other functions:
 

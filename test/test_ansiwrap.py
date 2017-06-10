@@ -242,3 +242,21 @@ def test_shorten_basic():
                      placeholder=green(u'\u2026'))
     expect = u'\x1b[31mthis is \u00fcber\x1b[32m\u2026\x1b[0m'
     assert result == expect
+
+def test_doc_example():
+    s = ' '.join([red('this string'),
+                  blue('is going on a bit long'),
+                  green('and may need to be'),
+                  color('shortened a bit', fg='purple')])
+
+    assert (s == '\x1b[31mthis string\x1b[0m \x1b[34mis going on a bit '
+                 'long\x1b[0m \x1b[32mand may need to be\x1b[0m '
+                 '\x1b[38;2;128;0;128mshortened a bit\x1b[0m')
+
+    assert (fill(s, 20) == '\x1b[31mthis string\x1b[0m \x1b[34mis '
+                 'going\x1b[0m\n\x1b[34mon a bit long\x1b[0m '
+                 '\x1b[32mand\x1b[0m\n\x1b[32mmay need to '
+                 'be\x1b[0m\n\x1b[38;2;128;0;128mshortened a bit\x1b[0m')
+
+    assert (shorten(s, 20, placeholder='...') == 
+           '\x1b[31mthis string\x1b[0m \x1b[34mis...\x1b[0m')
