@@ -1,4 +1,12 @@
 -
+  version: 0.8.1
+  date: June 11, 2017
+  notes: >
+    Tweaked ``setup.py``. Packaging now makes ``textwrap3`` an install, not
+    setup, requirement. Thanks to `MinchinWeb <https://github.com/MinchinWeb>`_
+    for observing & fixing.
+    
+-
   version: 0.8.0
   date: June 7, 2017
   notes: >
