@@ -6,6 +6,14 @@
     setup, requirement. Thanks to `MinchinWeb <https://github.com/MinchinWeb>`_
     for observing & fixing.
     
+    
+-
+  version: 0.8.1
+  date: June 10, 2017
+  notes: >
+    Improved README and tests.
+  
+    
 -
   version: 0.8.0
   date: June 7, 2017
