@@ -4,5 +4,7 @@ include pytest.ini
 include tox.ini
 include .travis.yml
 include CHANGES.yml
+include LICENSE.txt
+include AUTHORS
 include demo.py
 recursive-include test *.py

@@ -159,6 +159,8 @@ def shorten(text, width, **kwargs):
     """
     w = a_textwrap.TextWrapper(width=width, max_lines=1, **kwargs)
     unterm = w.wrap(' '.join(text.strip().split()))
+    if not unterm:
+        return ''
     term = ansi_terminate_lines(unterm[:1])
     return term[0]
 

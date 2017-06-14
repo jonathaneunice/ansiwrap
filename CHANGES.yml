@@ -1,4 +1,11 @@
 -
+  version: 0.8.3
+  date: June 14, 2017
+  notes: >
+    Fixed edge case in  `shorten()` reported by
+    `MinchinWeb <https://github.com/MinchinWeb>`_
+
+-
   version: 0.8.2
   date: June 11, 2017
   notes: >

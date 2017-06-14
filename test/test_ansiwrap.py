@@ -258,5 +258,11 @@ def test_doc_example():
                  '\x1b[32mand\x1b[0m\n\x1b[32mmay need to '
                  'be\x1b[0m\n\x1b[38;2;128;0;128mshortened a bit\x1b[0m')
 
-    assert (shorten(s, 20, placeholder='...') == 
+    assert (shorten(s, 20, placeholder='...') ==
            '\x1b[31mthis string\x1b[0m \x1b[34mis...\x1b[0m')
+
+def test_shorten_trivial():
+    assert shorten('', 79) == ''
+    assert shorten(' ', 50) == ''
+    assert shorten('   ', 55) == ''
+
