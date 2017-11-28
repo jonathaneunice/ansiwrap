@@ -89,7 +89,7 @@ def wrap(s, width=70, **kwargs):
     """
     kwargs = _unified_indent(kwargs)
     wrapped = a_textwrap.wrap(s, width, **kwargs)
-    return ansi_terminate_lines(wrapped)
+    return ansi_terminate_lines(wrapped, **kwargs)
 
 
 def fill(s, width=70, **kwargs):
@@ -123,7 +123,7 @@ def _ansi_optimize(s):
 # in this grass.
 
 
-def ansi_terminate_lines(lines):
+def ansi_terminate_lines(lines, **kwargs):
     """
     Walk through lines of text, terminating any outstanding color spans at
     the end of each line, and if one needed to be terminated, starting it on
@@ -132,12 +132,15 @@ def ansi_terminate_lines(lines):
     state = ANSIState()
     term_lines = []
     end_code = None
-    for line in lines:
-        codes = ANSIRE.findall(line)
+    initial_indent_len = len(kwargs.get('initial_indent',''))
+    subsequent_indent_len = len(kwargs.get('subsequent_indent', ''))
+    for i, line in enumerate(lines):
+        indent_len = initial_indent_len if i == 0 else subsequent_indent_len
+        codes = ANSIRE.findall(line[indent_len:])
         for c in codes:
             state.consume(c)
         if end_code:          # from prior line
-            line = end_code + line
+            line = line[:indent_len] + end_code + line[indent_len:]
         end_code = state.code()
         if end_code:          # from this line
             line = line + '\x1b[0m'

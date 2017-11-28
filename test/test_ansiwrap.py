@@ -271,3 +271,14 @@ def test_wrap_ansi_in_indent():
     indent = yellow('>')
     assert wrap(s, 20, indent=indent) == ['\x1b[33m>\x1b[0m\x1b[31mthis is a very long\x1b[0m',
                                           '\x1b[33m>\x1b[0m\x1b[31mline\x1b[0m']
+
+def test_wrap_ansi_in_indent_different_indents():
+    s = red('this is a very long line')
+    initial_indent = yellow('>')
+    subsequent_indent = yellow('>>>')
+    assert wrap(s, 10, initial_indent=initial_indent, subsequent_indent=subsequent_indent) == [
+        '\x1b[33m>\x1b[0m\x1b[31mthis is a\x1b[0m',
+        '\x1b[33m>>>\x1b[0m\x1b[31mvery\x1b[0m',
+        '\x1b[33m>>>\x1b[0m\x1b[31mlong\x1b[0m',
+        '\x1b[33m>>>\x1b[0m\x1b[31mline\x1b[0m'
+    ]
