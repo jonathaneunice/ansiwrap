@@ -266,3 +266,8 @@ def test_shorten_trivial():
     assert shorten(' ', 50) == ''
     assert shorten('   ', 55) == ''
 
+def test_wrap_ansi_in_indent():
+    s = red('this is a very long line')
+    indent = yellow('>')
+    assert wrap(s, 20, indent=indent) == ['\x1b[33m>\x1b[0m\x1b[31mthis is a very long\x1b[0m',
+                                          '\x1b[33m>\x1b[0m\x1b[31mline\x1b[0m']
