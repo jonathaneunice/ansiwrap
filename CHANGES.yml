@@ -1,4 +1,10 @@
 -
+  version: 0.8.4
+  date: January 23, 2019
+  notes: >
+    Updated testing matrix.
+
+-
   version: 0.8.3
   date: June 14, 2017
   notes: >

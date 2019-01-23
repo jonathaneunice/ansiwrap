@@ -14,7 +14,7 @@ def lines(text):
 
 setup(
     name='ansiwrap',
-    version='0.8.3',
+    version='0.8.4',
     author='Jonathan Eunice',
     author_email='jonathan.eunice@gmail.com',
     description="textwrap, but savvy to ANSI colors and styles",
@@ -23,7 +23,7 @@ setup(
     license='Apache License 2.0',
     packages=['ansiwrap'],
     setup_requires=[],
-    install_requires=['textwrap3'],
+    install_requires=['textwrap3>=0.9.2'],
     tests_require=['tox', 'pytest', 'ansicolors>=1.1.8', 'coverage', 'pytest-cov'],
     test_suite="test",
     zip_safe=False,
@@ -43,6 +43,7 @@ setup(
         Programming Language :: Python :: 3.4
         Programming Language :: Python :: 3.5
         Programming Language :: Python :: 3.6
+        Programming Language :: Python :: 3.7
         Programming Language :: Python :: Implementation :: CPython
         Programming Language :: Python :: Implementation :: PyPy
         Topic :: Software Development :: Libraries :: Python Modules
