@@ -86,7 +86,7 @@ class ANSIState(object):
             if isinstance(c, str):
                 return [c]
             if isinstance(c, (tuple, list, set)):
-                return ';'.join(str(p) for p in c)
+                return [';'.join(str(p) for p in c)]
             return [str(c)]
 
         raw_parts = []
