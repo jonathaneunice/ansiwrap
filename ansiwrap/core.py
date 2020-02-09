@@ -107,7 +107,7 @@ def fill(s, width=70, **kwargs):
 
 def _ansi_optimize(s):
     # remove clear-to-end-of-line (EL)
-    s = re.sub('\x1b\[K', '', s)
+    s = re.sub(r'\x1b\[K', '', s)
     return s
 
 
