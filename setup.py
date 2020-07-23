@@ -23,7 +23,7 @@ setup(
     license='Apache License 2.0',
     packages=['ansiwrap'],
     setup_requires=[],
-    install_requires=['textwrap3>=0.9.2'],
+    install_requires=["textwrap3>=0.9.2; python_version < '3.6'"],
     tests_require=['tox', 'pytest', 'ansicolors>=1.1.8', 'coverage', 'pytest-cov'],
     test_suite="test",
     zip_safe=False,
