@@ -20,8 +20,8 @@ LINE_LENGTHS = [20, 27, 40, 41, 42, 43, 55, 70, 78, 79, 80, 100]
 
 # as an alternative to testing all lengths at all times, which is slow,
 # choose a few other lengths at random
-other_lengths = (random.sample(set(range(20, 120)).difference(LINE_LENGTHS), 2) +
-                 random.sample(set(range(120, 400)).difference(LINE_LENGTHS), 1))
+other_lengths = (random.sample(list(set(range(20, 120)).difference(LINE_LENGTHS)), 2) +
+                 random.sample(list(set(range(120, 400)).difference(LINE_LENGTHS)), 1))
 LINE_LENGTHS.extend(other_lengths)
 
 
