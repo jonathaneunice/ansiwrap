@@ -1,0 +1,91 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ansiwrap"
+version = "1.0.0"
+description = "textwrap, but savvy to ANSI colors and styles"
+readme = { file = "README.rst", content-type = "text/x-rst" }
+requires-python = ">=3.10"
+license = "Apache-2.0"
+license-files = ["LICENSE.txt"]
+authors = [
+    { name = "Jonathan Eunice", email = "jonathan.eunice@gmail.com" },
+]
+keywords = ["text", "textwrap", "ANSI", "colors"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing",
+    "Topic :: Text Processing :: Filters",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "black>=26.5.1",
+    "build>=1.5.0",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "pyroma>=5.0.1",
+    "ruff>=0.15.20",
+    "tox>=4.56.2",
+    "twine>=6.2.0",
+    "validate-pyproject>=0.25",
+]
+
+test = [
+    "ansicolors>=1.1.8",
+    "pytest>=9.1.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/jonathaneunice/ansiwrap"
+Source = "https://github.com/jonathaneunice/ansiwrap"
+
+[tool.hatch.build.targets.wheel]
+packages = ["ansiwrap"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/ansiwrap",
+    "/tests",
+    "/README.rst",
+    "/CHANGES.yml",
+    "/LICENSE.txt",
+    "/AUTHORS",
+    "/demo.py",
+    "/tox.ini",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.black]
+line-length = 108
+target-version = ["py310"]
+
+[tool.ruff]
+line-length = 108
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["F403", "F405", "F841"]
+"ansiwrap/__init__.py" = ["F403"]

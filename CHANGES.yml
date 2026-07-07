@@ -1,4 +1,13 @@
 -
+  version: 1.0.0
+  date: July 7, 2026
+  notes: >
+    Modernized for Python 3.10+ only. Dropped the ``imp``/``textwrap3``
+    loading strategy in favor of a private stdlib ``textwrap`` copy with
+    ANSI-aware ``len`` patching. Migrated packaging to ``pyproject.toml``
+    and hatchling; zero runtime dependencies.
+
+-
   version: 0.8.4
   date: January 23, 2019
   notes: >

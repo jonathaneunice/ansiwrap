@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test (${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python-version: "3.10"
+          - python-version: "3.11"
+          - python-version: "3.12"
+          - python-version: "3.13"
+          - python-version: "3.14"
+          - python-version: "3.15-dev"
+            experimental: true
+          - python-version: "pypy3.10"
+          - python-version: "pypy3.11"
+
+    continue-on-error: ${{ matrix.experimental == true }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          allow-prereleases: ${{ matrix.experimental == true }}
+          cache: pip
+
+      - name: Show Python version
+        run: python -VV
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install package with test extras
+        run: python -m pip install -e ".[test]"
+
+      - name: Test with pytest
+        run: python -m pytest -l
+
+  lint:
+    name: Lint and coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+          cache: pip
+
+      - name: Show Python version
+        run: python -VV
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install package with dev extras
+        run: python -m pip install -e ".[dev,test]"
+
+      - name: Run ruff
+        run: python -m ruff check ansiwrap tests
+
+      - name: Run black --check
+        run: python -m black --check ansiwrap tests
+
+      - name: Validate pyproject.toml
+        run: validate-pyproject pyproject.toml
+
+      - name: Check package metadata with pyroma
+        run: pyroma -d .
+
+      - name: Build wheel and sdist
+        run: python -m build -o dist
+
+      - name: Check built packages with twine
+        run: twine check dist/*
+
+      - name: Test with coverage
+        run: python -m pytest -l --cov-branch --cov-report=term-missing --cov=ansiwrap

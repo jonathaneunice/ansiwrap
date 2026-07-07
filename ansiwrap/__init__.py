@@ -1,4 +1,5 @@
 from .core import *
+from .core import __all__ as _core_all
+from .version import __version__
 
-__version__ = '0.8.4'
-
+__all__ = [*_core_all, "__version__"]
