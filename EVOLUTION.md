@@ -46,10 +46,11 @@ it so the surface stays honest.
 
 ### Harden `ANSIState` for real CLI input
 
+- ~~Bright FG/BG (90–97, 100–107) silently dropped from reopen codes~~ —
+  fixed: `ANSIState`, render oracle, Hypothesis openers, low-level + golden
+  wrap tests.
 - Malformed / truncated 38/48 (256 / truecolor) sequences can `IndexError`
   instead of ignoring or partially applying.
-- Bright FG/BG (90–97, 100–107) are silently dropped from reopen codes;
-  style continuity is wrong for common “bright” palettes.
 - Prefer ignore/partial-parse over raising when wrapping untrusted output.
 - `assert not vals` in `consume` disappears under `-O`; prefer an explicit
   check or drop it.
@@ -120,6 +121,7 @@ copyright year, Development Status classifier if 1.0 means Stable.
    break, Unicode width, 3.10+, `_textwrap` fidelity story).
 3. Align `shorten` with `indent` (or document exclusion); remove or use
    `_ansi_optimize`.
-4. Harden `ANSIState` (malformed / bright SGR) if CLI corpora matter.
+4. Harden `ANSIState` further (malformed / truncated 38/48) if CLI corpora
+   matter; bright SGR reopen is done.
 5. Optional: `py.typed`, Stable classifier, copyright / project.urls polish.
 6. Testing backlog items — track in `tests/TESTING.md`, not here.

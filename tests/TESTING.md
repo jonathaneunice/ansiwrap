@@ -206,5 +206,7 @@ dependency, but as occasional differential tests.
 - Behavioral/golden suite preserved in `test_ansiwrap.py`.
 - Low-level `ANSIState` tests isolated in `test_ansistate_lowlevel.py`.
 - Hypothesis layout + style properties in `test_properties.py`.
+- Bright FG/BG (90–97, 100–107) handled in `ANSIState` and the render
+  oracle; covered by low-level, golden wrap, and Hypothesis openers.
 - Suite: existing tests + new properties green; one strict xfail for the
   mid-word CSI / `break_long_words` limitation.

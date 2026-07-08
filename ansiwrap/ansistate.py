@@ -47,7 +47,8 @@ class ANSIState:
                     self.style = [v for v in self.style if v != antitop]
                 if not self.style:
                     self.style = None
-            elif 30 <= top < 38:
+            elif 30 <= top < 38 or 90 <= top <= 97:
+                # Standard (30–37) and bright/aixterm (90–97) foreground.
                 self.fg = top
             elif top == 39:
                 self.fg = None
@@ -59,7 +60,8 @@ class ANSIState:
                     self.fg = (38, 2, vals.pop(0), vals.pop(0), vals.pop(0))
                 else:
                     raise ValueError("cant parse fg")
-            elif 40 <= top < 48:
+            elif 40 <= top < 48 or 100 <= top <= 107:
+                # Standard (40–47) and bright/aixterm (100–107) background.
                 self.bg = top
             elif top == 49:
                 self.bg = None

@@ -103,6 +103,48 @@ def test_ANSIState_standard_colors():
     assert a.code() == "\x1b[1m"
 
 
+def test_ANSIState_bright_colors():
+    """
+    Assert aixterm bright FG/BG (90–97, 100–107) parse and round-trip.
+
+    Bright codes must set fg/bg so wrap reopen emits them; ``39``/``49``
+    clear them like classic colors. Combined bright + style must survive
+    ``code()``.
+    """
+    a = ANSIState()
+    a.consume("\x1b[91m")
+    assert a.fg == 91
+    assert a.code() == "\x1b[91m"
+
+    a.consume("\x1b[103m")
+    assert a.fg == 91
+    assert a.bg == 103
+    assert a.code() == "\x1b[91;103m"
+
+    a.consume("\x1b[1m")
+    assert a.style == [1]
+    assert a.code() == "\x1b[91;103;1m"
+
+    a.consume("\x1b[39;49m")
+    assert a.fg is None
+    assert a.bg is None
+    assert a.code() == "\x1b[1m"
+
+    a = ANSIState()
+    a.consume("\x1b[97;107;1m")
+    assert a.fg == 97
+    assert a.bg == 107
+    assert a.style == [1]
+    assert a.code() == "\x1b[97;107;1m"
+
+    # Bright replaces classic (and vice versa) as the active fg/bg.
+    a.consume("\x1b[31m")
+    assert a.fg == 31
+    a.consume("\x1b[94m")
+    assert a.fg == 94
+    assert a.code() == "\x1b[94;107;1m"
+
+
 def test_ANSIState_style_on_off():
     """
     Assert style attrs accumulate, dedupe, and turn off via 2x codes.

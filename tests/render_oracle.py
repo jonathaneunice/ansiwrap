@@ -64,7 +64,8 @@ def apply_sgr(style: Style, params: list[int]) -> Style:
             attrs.add(top)
         elif 21 <= top <= 29:
             attrs.discard(top - 20)
-        elif 30 <= top <= 37:
+        elif 30 <= top <= 37 or 90 <= top <= 97:
+            # Standard and bright/aixterm foreground.
             fg = (top,)
         elif top == 39:
             fg = None
@@ -76,7 +77,8 @@ def apply_sgr(style: Style, params: list[int]) -> Style:
                 fg = (38, 2, vals.pop(0), vals.pop(0), vals.pop(0))
             else:
                 raise ValueError(f"unsupported fg color mode {under}")
-        elif 40 <= top <= 47:
+        elif 40 <= top <= 47 or 100 <= top <= 107:
+            # Standard and bright/aixterm background.
             bg = (top,)
         elif top == 49:
             bg = None

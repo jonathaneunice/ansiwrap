@@ -21,6 +21,10 @@
     continuity across wraps. See ``tests/TESTING.md`` for analysis and
     remaining gaps.
 
+    Fixed style continuity for bright / aixterm SGR foreground and
+    background codes (``90``–``97``, ``100``–``107``), which were previously
+    ignored when reopening color spans across wrapped lines.
+
     AI coding assistants Cursor Composer 2.5, Cursor Grok 4.5, and ChatGPT 5.5
     were used to great effect in this update—paired throughout with human
     judgment, guidance, and stewardship.

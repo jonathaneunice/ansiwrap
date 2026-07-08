@@ -259,6 +259,24 @@ def test_unterminated():
     ]
 
 
+def test_bright_unterminated():
+    """
+    Assert bright FG/BG (aixterm 90–97 / 100–107) reopen across wraps.
+
+    Same continuity contract as ``test_unterminated``, but with bright red
+    foreground and bright blue background so style is not silently dropped.
+    """
+    s = (
+        "this is \x1b[91;104mgood and things are okay but very long and do not  "
+        "really fit on one line so maybe wrapping?"
+    )
+    w = wrap(s, 50)
+    assert w == [
+        "this is \x1b[91;104mgood and things are okay but very long and\x1b[0m",
+        "\x1b[91;104mdo not  really fit on one line so maybe wrapping?\x1b[0m",
+    ]
+
+
 def test_known_text():
     """
     Assert exact wrap output for a fixed multi-color gibberish paragraph.
