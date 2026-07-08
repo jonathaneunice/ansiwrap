@@ -1,5 +1,9 @@
 """
-Tests for the ansiwrap module.
+Behavioral and golden tests for the ansiwrap public API.
+
+Human-authored cases for wrap, fill, shorten, and indent. Low-level
+``ANSIState`` checks live in ``test_ansistate_lowlevel``; Hypothesis
+properties live in ``test_properties``.
 """
 
 import random
@@ -18,18 +22,30 @@ LINE_LENGTHS.extend(other_lengths)
 
 
 def striplines(lines):
+    """
+    Return ``lines`` with CSI color sequences stripped from each entry.
+
+    Used when comparing ansiwrap layout to plain ``textwrap`` output.
+    """
     return [strip_color(line) for line in lines]
 
 
 def lengths(lines):
+    """
+    Return the raw ``len`` of each string in ``lines``.
+
+    Callers that need visible width should strip CSI first (see ``striplines``).
+    """
     return [len(line) for line in lines]
 
 
 def same_behavior(text, width, **kwargs):
     """
-    Comparison fixture. Did ansiwrap wrap the text to the same number
-    of lines, with the same number of visible characters per line, as textwrap
-    did to the text without ANSI codes?
+    Assert ansiwrap matches textwrap layout on CSI-stripped text.
+
+    Checks line count and visible characters per line for ``wrap``, and
+    filled length for ``fill``, against ``textwrap`` on the colorless
+    string.
     """
     no_ansi = strip_color(text)
     clean_wrap = textwrap.wrap(no_ansi, width, **kwargs)
@@ -46,6 +62,11 @@ def same_behavior(text, width, **kwargs):
 
 
 def test_one():
+    """
+    Assert wrap/fill layout matches textwrap on mixed ansicolors prose.
+
+    Runs ``same_behavior`` across the shared ``LINE_LENGTHS`` set.
+    """
     text = (
         red("This")
         + " is "
@@ -69,6 +90,11 @@ def test_one():
 
 
 def test_two():
+    """
+    Assert wrap/fill layout matches textwrap when newlines mix with colors.
+
+    Same layout oracle as ``test_one``, with embedded ``\\n`` in the source.
+    """
     text = (
         "textwrap\ndoes\nplain\ntext\nwell.\n"
         + red("But")
@@ -95,6 +121,12 @@ def test_two():
 
 
 def test_unified_indent():
+    """
+    Assert the unified ``indent`` kwarg matches textwrap indent behavior.
+
+    Covers int and str forms, and mixed ``(initial, subsequent)`` tuples,
+    against ``initial_indent`` / ``subsequent_indent`` on colorless text.
+    """
     text = (
         "textwrap\ndoes\nplain\ntext\nwell.\n"
         + red("But")
@@ -119,6 +151,11 @@ def test_unified_indent():
     no_ansi = strip_color(text)
 
     def test_at_width(w, kw1, kw2):
+        """
+        Compare ansiwrap and textwrap line lengths at one width and indent pair.
+
+        ``kw1`` is passed to ``wrap``; ``kw2`` is the equivalent textwrap kwargs.
+        """
         ansi_lines = wrap(text, w, **kw1)
         clean_lines = textwrap.wrap(no_ansi, w, **kw2)
         ansi_lens = lengths(striplines(ansi_lines))
@@ -166,6 +203,9 @@ def test_unified_indent():
 def test_odd_states():
     """
     Exercise ANSI codes not commonly emitted by ansicolors.
+
+    Includes EL, terse reset, truecolor, and style on/off sequences while
+    still matching ``textwrap.fill`` on the stripped string.
     """
     el = "\x1b[K"
 
@@ -203,6 +243,11 @@ def test_odd_states():
 
 
 def test_unterminated():
+    """
+    Assert open SGR is closed per line and reopened on the next.
+
+    Golden output for a long yellow span that wraps without a prior reset.
+    """
     s = (
         "this is \x1b[33mgood and things are okay but very long and do not  "
         "really fit on one line so maybe wrapping?"
@@ -215,6 +260,11 @@ def test_unterminated():
 
 
 def test_known_text():
+    """
+    Assert exact wrap output for a fixed multi-color gibberish paragraph.
+
+    Human-verified golden lines at width 30, including mid-line color breaks.
+    """
     r = (
         "gk zjpwxwqzq mnbafwsr agimmnmnv ylgy ebcdzrkfi eixtigdt skoxq zgjpqvrhf"
         " i cuwdkjtl bhzljgwsd ljyq zjsem qgdn kwsc \x1b[31ml khcgnkl emxk wl svm "
@@ -243,6 +293,11 @@ def test_known_text():
 
 
 def test_shorten_basic():
+    """
+    Assert shorten truncates plain and colored text with placeholders.
+
+    Covers default ``[...]``, colored placeholders, and a Latin-1 character.
+    """
     result = shorten("this is some really long text, no?", 15)
     assert result == "this is [...]"
 
@@ -272,6 +327,11 @@ def test_shorten_basic():
 
 
 def test_doc_example():
+    """
+    Assert the README-style example string, fill, and shorten outputs.
+
+    Pins the documented ansicolors composition and its wrap/shorten results.
+    """
     s = " ".join(
         [
             red("this string"),
@@ -298,6 +358,11 @@ def test_doc_example():
 
 
 def test_shorten_trivial():
+    """
+    Assert shorten returns empty for empty or whitespace-only input.
+
+    Matches textwrap-style collapse of blank content before truncation.
+    """
     assert shorten("", 79) == ""
     assert shorten(" ", 50) == ""
     assert shorten("   ", 55) == ""

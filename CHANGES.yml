@@ -18,8 +18,8 @@
     cases for non-SGR codes, style on/off, 256/truecolor sequences, and
     other edge paths—bringing ``ansistate`` to 100% line and branch coverage.
 
-    AI coding assistants Cursor Composer 2.5, ChatGPT 5.5, and Claude Sonnet
-    5.0 were used to great effect in this update—paired throughout with human
+    AI coding assistants Cursor Composer 2.5, Cursor Grok 4.5, and ChatGPT 5.5
+    were used to great effect in this update—paired throughout with human
     judgment, guidance, and stewardship.
 
 -

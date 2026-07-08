@@ -82,6 +82,11 @@ noise = st.sampled_from(["", "", "\x1b[K"])  # EL is zero-width; prefer often ab
 
 @st.composite
 def plain_word(draw, min_len=1, max_len=14):
+    """
+    Draw a single width-1 word with no embedded CSI.
+
+    Length is between ``min_len`` and ``max_len`` inclusive.
+    """
     n = draw(st.integers(min_value=min_len, max_value=max_len))
     return "".join(draw(plain_char) for _ in range(n))
 
@@ -155,13 +160,23 @@ def _expected_styled_from_plain_layout(text: str, plain_lines: list[str]):
 
 
 def _words_fit(plain: str, width: int) -> bool:
-    """True if no whitespace-delimited word exceeds width (avoids break_long_words CSI bug)."""
+    """
+    Return True if no whitespace-delimited word exceeds ``width``.
+
+    Used to ``assume`` away cases that hit the mid-word
+    ``break_long_words`` CSI limitation.
+    """
     return all(len(w) <= width for w in plain.split() if w)
 
 
 @given(text=ansi_text(), width=widths)
 @settings(max_examples=80, deadline=None)
 def test_layout_matches_textwrap_wrap(text, width):
+    """
+    Assert ``wrap`` line text matches ``textwrap.wrap`` after stripping CSI.
+
+    Also checks ``ansilen`` equals plain line length. Skips overlong words.
+    """
     plain = strip_color(text)
     assume(plain.strip())
     assume(_words_fit(plain, width))
@@ -174,6 +189,11 @@ def test_layout_matches_textwrap_wrap(text, width):
 @given(text=ansi_text(), width=widths)
 @settings(max_examples=80, deadline=None)
 def test_layout_matches_textwrap_fill(text, width):
+    """
+    Assert ``fill`` matches ``textwrap.fill`` on CSI-stripped content.
+
+    Skips empty/whitespace-only inputs and overlong words.
+    """
     plain = strip_color(text)
     assume(plain.strip())
     assume(_words_fit(plain, width))
@@ -188,6 +208,12 @@ def test_layout_matches_textwrap_fill(text, width):
 )
 @settings(max_examples=60, deadline=None)
 def test_layout_with_indents(text, width, initial, subsequent):
+    """
+    Assert unified ``indent=(initial, subsequent)`` matches textwrap indents.
+
+    Requires width greater than both indents and words that fit the content
+    column budget.
+    """
     plain = strip_color(text)
     assume(plain.strip())
     assume(width > initial and width > subsequent)
@@ -209,8 +235,10 @@ def test_layout_with_indents(text, width, initial, subsequent):
 @settings(max_examples=80, deadline=None)
 def test_wrap_preserves_rendered_content_styles(text, width):
     """
-    Non-whitespace content after wrap must match the original character
-    stream's styles (independent of CSI spelling / reopen encoding).
+    Assert wrap preserves per-character styles on non-whitespace content.
+
+    Compared via the render oracle, independent of CSI spelling or how
+    reopen/reset sequences are encoded on each line.
     """
     plain = strip_color(text)
     assume(plain.strip())
@@ -226,8 +254,10 @@ def test_wrap_preserves_rendered_content_styles(text, width):
 @settings(max_examples=60, deadline=None)
 def test_each_wrapped_line_resets_when_styled(text, width):
     """
-    If a wrapped line's last visible character carries a non-default style,
-    playing the line in isolation must end at default style (trailing reset).
+    Assert lines that end mid-style terminate with a reset.
+
+    If the last visible character carries a non-default style, playing
+    the line in isolation must finish at default style.
     """
     plain = strip_color(text)
     assume(plain.strip())
@@ -244,8 +274,10 @@ def test_each_wrapped_line_resets_when_styled(text, width):
 @settings(max_examples=50, deadline=None)
 def test_shorten_preserves_prefix_styles(text, width):
     """
-    shorten keeps a prefix of collapsed content; styles on kept
-    non-whitespace characters must match the source stream prefix.
+    Assert shorten keeps source styles on the retained content prefix.
+
+    Non-whitespace characters before the placeholder must match the
+    corresponding prefix of the original styled content stream.
     """
     plain = " ".join(strip_color(text).strip().split())
     assume(len(plain) > width)
@@ -271,6 +303,12 @@ def test_shorten_preserves_prefix_styles(text, width):
     strict=True,
 )
 def test_known_limitation_midword_csi_break_long_words():
+    """
+    Document that mid-word CSI breaks layout vs stripped textwrap.
+
+    Strict xfail: ``break_long_words`` slices by raw index, so visible
+    breaks diverge when CSI sits between letters of a long word.
+    """
     # After strip: 'a aaaaaaaaa' wraps at width 8 to ['a aaaaaa', 'aaa'].
     # With CSI between letters, ansiwrap currently yields different breaks.
     text = "a a" + "".join(f"\x1b[0m{c}" for c in "aaaaaaaaa")
