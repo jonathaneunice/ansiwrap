@@ -1,29 +1,17 @@
 
-| |travisci| |version| |versions| |impls| |wheel| |coverage|
+.. image:: https://img.shields.io/pypi/v/ansiwrap.svg
+   :target: https://pypi.org/project/ansiwrap
 
-.. |travisci| image:: https://api.travis-ci.org/jonathaneunice/ansiwrap.svg
-    :target: http://travis-ci.org/jonathaneunice/ansiwrap
+.. image:: https://github.com/jonathaneunice/ansiwrap/actions/workflows/ci.yml/badge.svg
+   :target: https://github.com/jonathaneunice/ansiwrap/actions/workflows/ci.yml
 
-.. |version| image:: http://img.shields.io/pypi/v/ansiwrap.svg?style=flat
-    :alt: PyPI Package latest release
-    :target: https://pypi.python.org/pypi/ansiwrap
+.. image:: https://img.shields.io/pypi/pyversions/ansiwrap.svg
+   :target: https://pypi.org/project/ansiwrap
 
-.. |versions| image:: https://img.shields.io/pypi/pyversions/ansiwrap.svg
-    :alt: Supported versions
-    :target: https://pypi.python.org/pypi/ansiwrap
+.. figure:: https://raw.githubusercontent.com/jonathaneunice/ansiwrap/main/docs/images/ansiwrap-concept.png
+   :alt: ansiwrap: textwrap that understands ANSI color codes
 
-.. |impls| image:: https://img.shields.io/pypi/implementation/ansiwrap.svg
-    :alt: Supported implementations
-    :target: https://pypi.python.org/pypi/ansiwrap
-
-.. |wheel| image:: https://img.shields.io/pypi/wheel/ansiwrap.svg
-    :alt: Wheel packaging support
-    :target: https://pypi.python.org/pypi/ansiwrap
-
-.. |coverage| image:: https://img.shields.io/badge/test_coverage-99%25-0000FF.svg
-    :alt: Test line coverage
-    :target: https://pypi.python.org/pypi/ansiwrap
-
+   ``textwrap`` is fooled by ANSI escape codes; ``ansiwrap`` is not.
 
 ``ansiwrap`` wraps text, like the standard ``textwrap`` module.
 But it also correctly wraps text that contains ANSI control
@@ -36,7 +24,6 @@ and display style, they have no logical length.
 The API mirrors the ``wrap``, ``fill``, and ``shorten``
 functions of ``textwrap``. For example::
 
-    from __future__ import print_function
     from colors import *     # ansicolors on PyPI
     from ansiwrap import *
 
@@ -60,6 +47,3 @@ It also exports several other functions:
 * ``strip_color`` (removes ANSI control codes from a string)
 
 See also the enclosed ``demo.py``.
-
-.. image:: https://content.screencast.com/users/jonathaneunice/folders/Jing/media/8db64be2-01cc-4da4-b46a-789c53c63b44/00000569.png
-   :align: center

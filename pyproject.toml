@@ -43,7 +43,7 @@ dev = [
     "pytest-cov>=7.1.0",
     "pyroma>=5.0.1",
     "ruff>=0.15.20",
-    "tox>=4.56.2",
+    "tox>=4.56.3",
     "twine>=6.2.0",
     "validate-pyproject>=0.25",
 ]
@@ -64,6 +64,7 @@ packages = ["ansiwrap"]
 include = [
     "/ansiwrap",
     "/tests",
+    "/docs/images",
     "/README.rst",
     "/CHANGES.yml",
     "/LICENSE.txt",
