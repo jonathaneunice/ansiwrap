@@ -3,8 +3,7 @@
   date: July 7, 2026
   notes: >
     Returning to freshen the module after a long hiatus. Everything 
-    evolves and needs occasional
-    maintenance and freshening.
+    evolves and needs occasional maintenance and freshening.
 
     Modernized for Python 3.10+ only. Dropped the ``imp``/``textwrap3``
     loading strategy in favor of a private stdlib ``textwrap`` copy with
@@ -14,9 +13,13 @@
     Replaced Travis CI with a GitHub Actions workflow testing across Python
     3.10–3.15 and PyPy3. Default branch is now ``main``.
 
-    Renamed the ``test`` directory to ``tests``. Extended ``ANSIState`` test
-    cases for non-SGR codes, style on/off, 256/truecolor sequences, and
-    other edge paths—bringing ``ansistate`` to 100% line and branch coverage.
+    Renamed the ``test`` directory to ``tests``. Substantially expanded the
+    suite: isolated low-level ``ANSIState`` checks (non-SGR, style on/off,
+    256/truecolor, and related edges—bringing ``ansistate`` to 100% line and
+    branch coverage); added an independent SGR render oracle; and introduced
+    Hypothesis property tests for layout vs ``textwrap`` and rendered style
+    continuity across wraps. See ``tests/TESTING.md`` for analysis and
+    remaining gaps.
 
     AI coding assistants Cursor Composer 2.5, Cursor Grok 4.5, and ChatGPT 5.5
     were used to great effect in this update—paired throughout with human
