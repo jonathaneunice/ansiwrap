@@ -73,7 +73,8 @@ class ANSIState:
                     self.bg = (48, 2, vals.pop(0), vals.pop(0), vals.pop(0))
                 else:
                     raise ValueError("cant parse bg")
-        assert not vals
+        if vals:
+            raise ValueError(f"unconsumed SGR parameters: {vals}")
         self.seen.append(code)
 
     def code(self) -> str:

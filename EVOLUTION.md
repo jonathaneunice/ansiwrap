@@ -52,8 +52,8 @@ it so the surface stays honest.
 - Malformed / truncated 38/48 (256 / truecolor) sequences can `IndexError`
   instead of ignoring or partially applying.
 - Prefer ignore/partial-parse over raising when wrapping untrusted output.
-- `assert not vals` in `consume` disappears under `-O`; prefer an explicit
-  check or drop it.
+- ~~`assert not vals` in `consume` disappears under `-O`~~ — replaced with an
+  explicit ``ValueError`` for leftover SGR parameters.
 
 ### Public vs private surface
 
@@ -109,8 +109,9 @@ copyright year, Development Status classifier if 1.0 means Stable.
 - Confirm nothing still references deleted `setup.py` / Travis / `MANIFEST.in`.
 - Consider dropping `PYTHONPATH = {toxinidir}` in `tox.ini` once installs are
   clean without path munging (`usedevelop = False` today).
-- Optional: ship `py.typed` for typed consumers (internal annotations already
-  exist).
+- ~~Optional: ship `py.typed` for typed consumers~~ — added empty
+  `ansiwrap/py.typed` (PEP 561 marker so installers/type checkers treat the
+  package as typed).
 
 ---
 
@@ -123,5 +124,5 @@ copyright year, Development Status classifier if 1.0 means Stable.
    `_ansi_optimize`.
 4. Harden `ANSIState` further (malformed / truncated 38/48) if CLI corpora
    matter; bright SGR reopen is done.
-5. Optional: `py.typed`, Stable classifier, copyright / project.urls polish.
+5. Optional: Stable classifier, copyright / project.urls polish (`py.typed` done).
 6. Testing backlog items — track in `tests/TESTING.md`, not here.
