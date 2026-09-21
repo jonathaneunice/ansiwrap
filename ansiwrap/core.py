@@ -9,7 +9,7 @@ from ansiwrap.ansistate import ANSIState
 
 __all__ = "wrap fill shorten strip_color ansilen ansi_terminate_lines".split()
 
-ANSIRE = re.compile(r"\x1b\[(K|.*?m)")
+ANSIRE = re.compile(r"\x1b\[(K|[0-9;]*m)")
 
 
 def strip_color(s: str) -> str:
