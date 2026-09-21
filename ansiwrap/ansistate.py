@@ -42,9 +42,10 @@ class ANSIState:
                     self.style.append(top)
                 self.style = sorted(self.style)
             elif 21 <= top <= 29:
-                antitop = top - 20
-                if self.style is not None and antitop in self.style:
-                    self.style = [v for v in self.style if v != antitop]
+                # Normal intensity clears both bold and faint (SGR 22).
+                reset_styles = (1, 2) if top == 22 else (top - 20,)
+                if self.style is not None:
+                    self.style = [v for v in self.style if v not in reset_styles]
                 if not self.style:
                     self.style = None
             elif 30 <= top < 38 or 90 <= top <= 97:
