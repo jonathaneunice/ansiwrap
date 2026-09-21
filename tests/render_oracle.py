@@ -20,7 +20,7 @@ import re
 from dataclasses import dataclass
 
 # Same practical CSI subset ansiwrap recognizes (SGR + EL).
-_ANSI_RE = re.compile(r"\x1b\[(K|.*?m)")
+_ANSI_RE = re.compile(r"\x1b\[(K|[0-9;]*m)")
 
 
 @dataclass(frozen=True)
@@ -62,6 +62,8 @@ def apply_sgr(style: Style, params: list[int]) -> Style:
             attrs.clear()
         elif 1 <= top <= 9:
             attrs.add(top)
+        elif top == 22:
+            attrs.difference_update({1, 2})
         elif 21 <= top <= 29:
             attrs.discard(top - 20)
         elif 30 <= top <= 37 or 90 <= top <= 97:
